@@ -1,4 +1,22 @@
+#ifndef HEAP_DW
+#define HEAP_DW
+using namespace::std;
 struct node{
   string id;
   int score;
 };
+
+class Heap{
+    vector<node> heap;
+    vector<int> handle;
+    node findContestant(string);
+    bool insertContestant(string, int);
+    bool eliminateWeakest();
+    bool earnPoints(string, int);
+    bool losePoints(string, int);
+    int showContestants();
+    int showHandles();
+    int showLocation(string);
+    node crownWinner();
+};
+#endif
