@@ -1,0 +1,1 @@
+Contestant <1> inserted with initial score <0>.
