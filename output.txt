@@ -14,7 +14,7 @@ Contestant <4> in extended heap location <4> with score of <20>.
 findContestant <5>
 Contestant <5> is not in the extended heap.
 eliminateWeakest
-Contestant <1> with current lowest score <0>. eliminated.
+Contestant <1> with current lowest score <0> eliminated.
 losePoints <3> <40>
 Contestant <3>'s score decreased by <40> points to <40>.
 earnPoints <2> <10>

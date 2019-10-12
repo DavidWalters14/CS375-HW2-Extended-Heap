@@ -187,7 +187,7 @@ int main(int argc, char** argv){
 				heapify(heap,handle);
 				handle[id]=-1;
 				mp[id]=score;
-				output << "Contestant <" << id << "> with current lowest score <" << score << ">. eliminated." << endl;
+				output << "Contestant <" << id << "> with current lowest score <" << score << "> eliminated." << endl;
 			}
 		}
 		else if(method.compare("losePoints")==0){
