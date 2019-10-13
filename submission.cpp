@@ -5,7 +5,6 @@
 #include <string>
 #include <cstring>
 #include <string.h>
-#include <unordered_map>
 
 
 using namespace std;
@@ -50,7 +49,7 @@ void heapify(vector<node> &h, vector<int> &ha){
 			/*if(ha[i]==-1){
 				ha[i]=ha[n];
 			}*/
-			
+
 			if(h[i].score <= h[n].score){
 				//cout << "no op flag" << endl;
 				break;
@@ -61,9 +60,9 @@ void heapify(vector<node> &h, vector<int> &ha){
 				h[i].score = h[n].score;
 				h[n].id = temp.id;
 				h[n].score = temp.score;
-				int temp2 = ha[i];
-				ha[i] = ha[n];
-				ha[n] = temp2;
+				int temp2 = ha[h[i].id];
+				ha[h[i].id] = ha[h[n].id];
+				ha[h[n].id] = temp2;
 			}
 			i = n;
 			//cout << "i at end of loop" << i << endl;
@@ -72,11 +71,6 @@ void heapify(vector<node> &h, vector<int> &ha){
 	for(int i = 1 ; i < h.size() ; i++){
 		ha[h[i].id]=i;
 	}
-	/*if(ha[1]==-1){
-		for(int i = 2 ; i < ha.size() ; i++){
-			ha[i]--;
-		}
-	}*/
 };
 
 int main(int argc, char** argv){
@@ -94,7 +88,6 @@ int main(int argc, char** argv){
 	input >> size;
 	vector<node> heap;
 	vector<int> handle;
-	unordered_map<int,int> mp;
 	node nullnode;
 	nullnode.id=NULL;
 	nullnode.score = NULL;
@@ -121,13 +114,16 @@ int main(int argc, char** argv){
 			int scorenum = stoi(score.substr(index3+1,index4));
 			//cout << scorenum << endl;
 			output << "insertContestant <" << idnum <<"> <" << scorenum << ">" << endl;
+
 			if(heap.size()>=size){
 				//cout << "if flag" << endl;
 				output << "Contestant <" << idnum << "> can not be inserted because the heap is full." << endl;
+
 			}
 			else if(handle[idnum]!=-1){
 				//cout << "else if flag" << endl;
 				output << "Contestant <" << idnum << "> is already in the extended heap: cannot insert." << endl;
+
 			}
 			else{
 				//cout << "else " << endl;
@@ -138,20 +134,18 @@ int main(int argc, char** argv){
 				heap.push_back(temp);
 				handle.resize(heap.size());
 				handle[idnum]=handle.size()-1;
-				
+
 				//cout << "handle size" << handle.size() << endl;
 				heapify(heap, handle);
 				//cout << "heapify flag" << endl;
 				output << "Contestant <" << idnum << "> inserted with initial score <" << scorenum << ">." << endl;
+
 			}
 		}
 		else if(method.compare("showContestants")==0){
 			output << "showContestants" << endl;
 			for(int i = 1 ; i < heap.size() ; i++){
-				//cout << "i: " << i << " handle[i] " << handle[i] << " heap score of i " << heap[i].score << endl;  
-				if(handle[i]!=-1){
 					output << "Contestant <" << heap[i].id << "> in extended heap location <" << handle[heap[i].id] << "> with score of <" << heap[i].score << ">." << endl;
-				}
 			}
 		}
 		else if(method.compare("findContestant")==0){
@@ -181,12 +175,11 @@ int main(int argc, char** argv){
 				handle[id] = -1;
 				heap[1].eliminated = true;
 				heap[1] = heap[heap.size()-1];
-				handle[heap[1].id]=1;
-				handle[heap.size()-1]=-1;
+				handle[heap[1].id]=-1;
+				handle[heap.size()-1]=1;
 				heap.resize(heap.size()-1);
 				heapify(heap,handle);
-				handle[id]=-1;
-				mp[id]=score;
+				//handle[id]=-1;
 				output << "Contestant <" << id << "> with current lowest score <" << score << "> eliminated." << endl;
 			}
 		}
@@ -236,7 +229,7 @@ int main(int argc, char** argv){
 		else if(method.compare("showHandles")==0){
 			output << "showHandles" << endl;
 			for(int i = 1 ; i < handle.size()+1 ; i++){
-				if(mp.find(i)!=mp.end()){
+				if(handle[i]==-1){
 					output << "There is no Contestant <" << i << "> in the extended heap: handle[<" << i <<">]=-1." << endl;
 				}
 				else if(i==handle.size()){
@@ -252,6 +245,7 @@ int main(int argc, char** argv){
 			output << "crownWinner" << endl;
 			heapify(heap, handle);
 			for(int i = heap.size() ; i >= 2 ; i--){
+				handle[heap[1].id]=-1;
 				heap[1] = heap[heap.size()-1];
 				heap.resize(heap.size()-1);
 				heapify(heap, handle);
